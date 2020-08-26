@@ -1,0 +1,61 @@
+{
+  "name": "nerdysoft",
+  "version": "1.0.0",
+  "description": "simple test task. olx analogue",
+  "main": "index.js",
+  "scripts": {
+    "server-prod": "(mkdir \"./dist\" 2> NUL)&(xcopy \"./src/server\" \"./dist\" /i /c /e /r /y)",
+    "server-dev": "nodemon ./src/server/index.js",
+    "client-prod": "SET \"NODE_ENV=production\" && webpack --mode production",
+    "client-dev": "SET \"NODE_ENV=development\" && webpack-dev-server --mode development",
+    "prod": "concurrently \"npm run server-prod\" \"npm run client-prod\"",
+    "dev": "concurrently \"npm run server-dev\" \"npm run client-dev\""
+  },
+  "keywords": [
+    "olx"
+  ],
+  "author": "wasya1212",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.11.4",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/preset-react": "^7.10.4",
+    "babel-loader": "^8.1.0",
+    "babel-minify-webpack-plugin": "^0.3.1",
+    "babel-preset-minify": "^0.5.1",
+    "babel-register": "^6.26.0",
+    "concurrently": "^5.3.0",
+    "css-loader": "^4.2.2",
+    "extract-loader": "^5.1.0",
+    "file-loader": "^6.0.0",
+    "html-loader": "^1.3.0",
+    "html-webpack-plugin": "^4.3.0",
+    "imagemin-gifsicle": "^7.0.0",
+    "imagemin-jpegtran": "^7.0.0",
+    "imagemin-optipng": "^8.0.0",
+    "imagemin-svgo": "^8.0.0",
+    "imagemin-webpack": "^5.1.1",
+    "nodemon": "^2.0.4",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "pug-html-loader": "^1.1.5",
+    "sass": "^1.26.10",
+    "sass-loader": "^10.0.1",
+    "style-loader": "^1.2.1",
+    "ts-loader": "^8.0.3",
+    "typescript": "^4.0.2",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "url-loader": "^4.1.0",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0",
+    "webpack-merge": "^5.1.2"
+  },
+  "dependencies": {
+    "koa": "^2.13.0",
+    "koa-router": "^9.4.0",
+    "koa-static": "^5.0.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}
