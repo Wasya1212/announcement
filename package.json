@@ -21,6 +21,11 @@
     "@babel/plugin-proposal-class-properties": "^7.10.4",
     "@babel/preset-env": "^7.11.0",
     "@babel/preset-react": "^7.10.4",
+    "@types/jest": "^26.0.10",
+    "@types/node": "^14.6.0",
+    "@types/react": "^16.9.48",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-router-dom": "^5.1.5",
     "babel-loader": "^8.1.0",
     "babel-minify-webpack-plugin": "^0.3.1",
     "babel-preset-minify": "^0.5.1",
@@ -52,10 +57,22 @@
     "webpack-merge": "^5.1.2"
   },
   "dependencies": {
+    "@koa/cors": "^3.1.0",
+    "axios": "^0.20.0",
     "koa": "^2.13.0",
+    "koa-body": "^4.2.0",
     "koa-router": "^9.4.0",
+    "koa-session2": "^2.2.10",
+    "koa-session2-mongostore": "0.0.5",
     "koa-static": "^5.0.0",
+    "mongoose": "^5.10.1",
+    "mongoose-sequence": "^5.2.2",
+    "mongoose-type-email": "^1.0.12",
+    "mongoose-type-phone": "^1.0.1",
+    "mongoose-type-url": "^2.0.0",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0",
+    "winston": "^3.3.3"
   }
 }

@@ -1,9 +1,7 @@
-const Router = require('koa-router');
+const AnnouncementRouter = require('./announcement');
+const FeedRouter = require('./feed');
 
-const router = new Router();
-
-router.get('/', async (ctx) => {
-  ctx.body = "Hello world";
-});
-
-module.exports = router;
+module.exports = {
+  AnnouncementRouter,
+  FeedRouter
+};
