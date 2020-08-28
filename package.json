@@ -58,9 +58,13 @@
   },
   "dependencies": {
     "@koa/cors": "^3.1.0",
+    "async-busboy": "^1.0.1",
     "axios": "^0.20.0",
+    "busboy": "^0.3.1",
+    "cloudinary": "^1.23.0",
     "koa": "^2.13.0",
     "koa-body": "^4.2.0",
+    "koa-busboy": "^1.2.0",
     "koa-router": "^9.4.0",
     "koa-session2": "^2.2.10",
     "koa-session2-mongostore": "0.0.5",

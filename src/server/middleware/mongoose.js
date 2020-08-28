@@ -18,8 +18,8 @@ module.exports.AutoIncrement = AutoIncrement;
 
 module.exports.createStore = () => {
   return new MongoStore({
-      url: "mongodb+srv://wasya1212:wasya1212@cluster0-v4ayb.mongodb.net/test?retryWrites=true&w=majority",
-      dbName: "test"
+      url: "mongodb+srv://wasya1212:wasya1212@cluster0-v4ayb.mongodb.net/nerdysoft?retryWrites=true&w=majority",
+      dbName: "nerdysoft"
   });
 };
 
@@ -38,7 +38,7 @@ module.exports.destroySession = async (sid) => {
 
 module.exports.connect = () => {
   mongoose.connect(
-    'mongodb+srv://wasya1212:wasya1212@cluster0-v4ayb.mongodb.net/test?retryWrites=true&w=majority',
+    'mongodb+srv://wasya1212:wasya1212@cluster0-v4ayb.mongodb.net/nerdysoft?retryWrites=true&w=majority',
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,

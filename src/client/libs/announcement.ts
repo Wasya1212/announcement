@@ -3,7 +3,9 @@ import Axios from "axios";
 export interface AnnouncementProterties {
   title: string,
   description: string,
-  pictures: any[]
+  category: string,
+  pictures: any[],
+  totalPrice: number
 }
 
 export default class Announcement {
@@ -12,11 +14,14 @@ export default class Announcement {
   }
 
   public static async create(announcementData: AnnouncementProterties) {
-    const formData = new FormData();
+    let formData = new FormData();
 
-    // formData.append("title", announcementData.title);
-    // formData.append("description", announcementData.description);
-    // formData.append("category", announcementData.category);
+    console.log(announcementData)
+
+    formData.append("title", announcementData.title);
+    formData.append("description", announcementData.description);
+    formData.append("category", announcementData.category);
+    formData.append("totalPrice", announcementData.totalPrice.toString());
 
     announcementData.pictures.forEach((picture: any, index: number) => {
       formData.append(`image-${index}`, picture);
@@ -24,7 +29,7 @@ export default class Announcement {
     });
 
     const { data } = await Axios.post(
-      'http://localhost:5000/announcement',
+      '/announcement',
       formData,
       { headers: { 'Content-Type': 'multipart/form-data' } }
     );
