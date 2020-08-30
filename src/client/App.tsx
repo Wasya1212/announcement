@@ -20,7 +20,7 @@ export default class App extends Component<any, any> {
         <Header pagesLinks={PAGES}></Header>
         <div className="container">
           <Route path="/" exact component={FeedPage} />
-          <Route path="/announcement/search/:query" exact component={FeedPage} />
+          <Route path="/announcement/search" exact component={FeedPage} />
           <Route path="/announcement/id/:id" exact component={AnnouncementPage} />
           <Route path="/announcement/create" exact component={CreateAnnouncementPage} />
           <Route path="/announcement/update/:id" exact component={UpdateAnnouncementPage} />

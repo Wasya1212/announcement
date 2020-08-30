@@ -57,8 +57,15 @@ router.get('/announcement', async (ctx) => {
   ctx.body = await Announcement.aggregate([
     { $match: query },
     { $project: ALLOWABLE_SEARCH_FIELDS_FOR_CLIENT },
+    { $sort: { date: -1 } },
+    { $skip: Math.abs((+ctx.request.query.page - 1 || 0) * itemsLimit) },
     { $limit: itemsLimit }
   ]);
+});
+
+router.get('/announcement/count', async (ctx) => {
+  let query = checkQueryFields(KEY_FIELDS_FOR_SEARCH, ctx.request.query);
+  ctx.body = await Announcement.find(query).countDocuments();
 });
 
 router.post('/announcement', async (ctx, next) => {

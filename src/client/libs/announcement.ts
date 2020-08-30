@@ -1,5 +1,7 @@
 import Axios from "axios";
 
+import Query from "./query";
+
 export interface AnnouncementProterties {
   title?: string,
   description?: string,
@@ -18,7 +20,8 @@ export interface ExtendedAnnouncementProterties extends AnnouncementProterties {
 }
 
 export interface SearchAnnouncementOptions {
-  limit?: number
+  limit?: number,
+  page?: number
 }
 
 export default class Announcement implements AnnouncementProterties {
@@ -43,7 +46,7 @@ export default class Announcement implements AnnouncementProterties {
   }
 
   private static createSearchQuery(query: any = {}): string {
-    return Object.keys(query).map(o => `${o}=${query[o].toString()}`).join('&');
+    return Query.createQueryFromParametersObject(query).slice(1);
   }
 
   public static async find(searchQuery: AnnouncementProterties = {}, searchOptions?: SearchAnnouncementOptions): Promise<Announcement[]> {
@@ -53,6 +56,15 @@ export default class Announcement implements AnnouncementProterties {
     });
 
     return results.map((result: any) => new Announcement(result));
+  }
+
+  public static async getTotalCount(searchQuery: AnnouncementProterties = {}): Promise<number> {
+    const { data } = await Axios({
+      method: 'GET',
+      url: `/announcement/count?${this.createSearchQuery(searchQuery)}`
+    });
+
+    return data;
   }
 
   public static async delete(id: string): Promise<boolean> {

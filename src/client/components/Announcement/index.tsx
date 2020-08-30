@@ -115,12 +115,12 @@ export class FindAnnouncementFormComponent extends Component<any, FindAnnounceme
 
   render() {
     if (this.state.submited) {
-      return <Redirect to={`/announcement/search/${this.state.searchQuery}`} />;
+      return <Redirect to={`/announcement/search?title=${this.state.searchQuery}`} />;
     }
 
     return (
       <form onSubmit={this.handleSumbit}>
-        <input onChange={this.handleChange} placeholder="Search..." />
+        <input required onChange={this.handleChange} placeholder="Search..." />
         <button onClick={this.search}>find</button>
       </form>
     );

@@ -1,42 +1,59 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { RouteComponentProps, Link, useLocation } from "react-router-dom";
 
 import Announcement from "../../libs/announcement";
-import { CompactAnnouncementComponent } from "../../components/Announcement";
+import Query from "../../libs/query";
 
-interface FeedPageComponentState {
-  announcements: Announcement[]
+import { CompactAnnouncementComponent } from "../../components/Announcement";
+import Pagination from "../../components/Pagination";
+
+export interface FeedPageState {
+  announcements: Announcement[],
+  announcementsPagesCount: number,
+  searchQuery: Query
 }
 
-export default class FeedPageComponent extends Component<any, FeedPageComponentState> {
+export default class FeedPageComponent extends Component<any, FeedPageState> {
   constructor(props) {
     super(props);
 
     this.state = {
-      announcements: []
+      announcements: [],
+      announcementsPagesCount: 0,
+      searchQuery: new Query(this.props.location.search)
     }
   }
 
-  componentWillReceiveProps(newProps) {
-    const newQuery = newProps.match.params.query;
-    const oldQuery = this.props.match.params.query;
+  async componentWillReceiveProps(newProps) {
+    const query = new Query(newProps.location.search);
+    const pageNumber: number = query.get("page");
 
-    if (newQuery && newQuery != oldQuery) {
-      Announcement.find({ title: newQuery.toString() }, { limit: 3 })
-        .then((announcements: Announcement[]) => {
-          this.setState({ announcements });
-        });
+    query.remove("page");
+
+    if (query != this.state.searchQuery) {
+      const announcementsCount: number = await Announcement.getTotalCount(query.queries);
+      const announcements: Announcement[] = await Announcement.find(query.queries, { limit: 3, page: pageNumber });
+
+      this.setState({
+        announcements,
+        announcementsPagesCount: Math.ceil(announcementsCount / 3),
+        searchQuery: query
+      });
     }
   }
 
-  componentDidMount() {
-    Announcement.find(
-      this.props.match.params.query
-        ? { title: this.props.match.params.query }
-        : {},
-      { limit: 3 }
-    ).then((announcements: Announcement[]) => {
-      this.setState({ announcements });
+  async componentDidMount() {
+    const pageNumber: number = this.state.searchQuery.get("page");
+    const query = this.state.searchQuery;
+
+    query.remove("page");
+
+    const announcementsCount: number = await Announcement.getTotalCount(query.queries);
+    const announcements: Announcement[] = await Announcement.find(query.queries, { limit: 3, page: pageNumber });
+
+    this.setState({
+      announcements,
+      announcementsPagesCount: Math.ceil(announcementsCount / 3)
     });
   }
 
@@ -50,6 +67,12 @@ export default class FeedPageComponent extends Component<any, FeedPageComponentS
             </Link>
           ))
         }
+        <Pagination
+          pagesCount={this.state.announcementsPagesCount}
+          currentPageNumber={1}
+          maxButtonsCount={10}
+          linkTemplate={(page: number) => `/announcement/search${Query.createQuery({ ...this.state.searchQuery.queries, page: page })}`}
+        />
       </div>
     );
   }
