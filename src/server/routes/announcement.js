@@ -68,6 +68,15 @@ router.get('/announcement/count', async (ctx) => {
   ctx.body = await Announcement.find(query).countDocuments();
 });
 
+router.get('/announcement/top/:id', async (ctx) => {
+  const currentAnnouncement = await Announcement.findById(ctx.request.params.id);
+
+  ctx.body = await Announcement
+    .find({$or: currentAnnouncement.keywords.map(keyword => ({ keywords: keyword }))})
+    .sort({ viewsCount: -1 })
+    .limit(3);
+});
+
 router.post('/announcement', async (ctx, next) => {
   if (!compareBodyFields(KEY_FIELDS_FROM_CLIENT_FOR_CREATION, ctx.request.body)) {
     ctx.throw(400, "Bad request!");
@@ -87,6 +96,14 @@ router.post('/announcement', async (ctx, next) => {
   const newAnnouncement = await Announcement.create(query);
 
   ctx.body = newAnnouncement;
+  await next();
+});
+
+router.post('/announcement/watch', async (ctx, next) => {
+  await Announcement.findByIdAndUpdate(ctx.request.body.id, { $inc: { viewsCount: 1 } });
+
+  ctx.status = 200;
+  ctx.body = true;
   await next();
 });
 

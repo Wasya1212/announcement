@@ -34,6 +34,8 @@ export class AnnouncementPage extends Component<AnnouncementPageProps, Announcem
   async componentDidMount() {
     const announcements: Announcement[] = await Announcement.find({ id: this.props.id });
 
+    Announcement.makeViews(this.props.id);
+
     this.setState({
       announcement: announcements[0]
     });
@@ -43,6 +45,7 @@ export class AnnouncementPage extends Component<AnnouncementPageProps, Announcem
     return (
       <main>
         <h1>{this.state.announcement.id}</h1>
+        <h3>views: {this.state.announcement.viewsCount}</h3>
         <Link to={`/announcement/update/${this.state.announcement.id}`}>update</Link>
         <DeleteAnnouncementFormComponent announcementId={this.state.announcement.id} />
       </main>

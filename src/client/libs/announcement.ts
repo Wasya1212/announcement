@@ -49,6 +49,10 @@ export default class Announcement implements AnnouncementProterties {
     return Query.createQueryFromParametersObject(query).slice(1);
   }
 
+  public static makeViews(id: string): void {
+    Axios.post('/announcement/watch', { id });
+  }
+
   public static async find(searchQuery: AnnouncementProterties = {}, searchOptions?: SearchAnnouncementOptions): Promise<Announcement[]> {
     const { data: results } = await Axios({
       method: 'GET',
