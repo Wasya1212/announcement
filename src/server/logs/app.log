@@ -68,3 +68,38 @@
 {"message":"500 - Cast to Object failed for value \"undefined\" at path \"$or.0\" for model \"Announcement\" - /announcement/top/5f4bf7568021c94468dee967 - GET - ::1","level":"error"}
 {"message":"500 - Cast to Object failed for value \"undefined\" at path \"$or.0\" for model \"Announcement\" - /announcement/top/5f4bf7568021c94468dee967 - GET - ::1","level":"error"}
 {"message":"500 - Cast to Object failed for value \"undefined\" at path \"$or.0\" for model \"Announcement\" - /announcement/top/5f4bf7568021c94468dee967 - GET - ::1","level":"error"}
+{"message":"500 - $and/$or/$nor must be a nonempty array - /announcement/top/5f4bfe998021c94468dee96a?limit=3 - GET - ::ffff:127.0.0.1","level":"error"}
+{"message":"500 - Announcement.find(...).sort(...).limit(...).aggregate is not a function - /announcement/top/5f4bf7568021c94468dee967 - GET - ::1","level":"error"}
+{"message":"500 - Announcement.agregate is not a function - /announcement/top/5f4bf7568021c94468dee967 - GET - ::1","level":"error"}
+{"message":"500 - Announcement.aggregate(...).find is not a function - /announcement/top/5f4bf7568021c94468dee967 - GET - ::1","level":"error"}
+{"message":"500 - Cannot read property 'keywords' of undefined - /announcement/top/5f4bf7568021c94468dee967 - GET - ::1","level":"error"}
+{"message":"500 - currentAnnouncement.aggregate is not a function - /announcement/top/5f4bf7568021c94468dee967 - GET - ::1","level":"error"}
+{"message":"500 - Cannot read property 'map' of undefined - /announcement/top/5f4bf7568021c94468dee967 - GET - ::1","level":"error"}
+{"message":"500 - Cannot read property 'map' of undefined - /announcement/top/5f4bf7568021c94468dee967 - GET - ::1","level":"error"}
+{"message":"500 - Cannot read property 'map' of undefined - /announcement/top/5f4bf7568021c94468dee967 - GET - ::1","level":"error"}
+{"message":"500 - Cannot read property 'map' of undefined - /announcement/top/5f4bf7568021c94468dee967 - GET - ::1","level":"error"}
+{"message":"500 - Cannot read property 'map' of undefined - /announcement/top/5f4bf7568021c94468dee967 - GET - ::1","level":"error"}
+{"message":"500 - Cannot read property 'map' of undefined - /announcement/top/5f4bf7568021c94468dee967 - GET - ::1","level":"error"}
+{"message":"500 - Cannot read property 'map' of undefined - /announcement/top/5f4bf7568021c94468dee967 - GET - ::1","level":"error"}
+{"message":"500 - Cannot read property 'map' of undefined - /announcement/top/5f4bf7568021c94468dee967 - GET - ::1","level":"error"}
+{"message":"500 - Cannot read property 'map' of undefined - /announcement/top/5f4bf7568021c94468dee967 - GET - ::1","level":"error"}
+{"message":"500 - Cannot read property 'map' of undefined - /announcement/top/5f4bf7568021c94468dee967 - GET - ::1","level":"error"}
+{"message":"500 - Cannot read property 'map' of undefined - /announcement/top/5f4bf7568021c94468dee967 - GET - ::1","level":"error"}
+{"message":"500 - Cannot read property 'map' of undefined - /announcement/top/5f4bf7568021c94468dee967 - GET - ::1","level":"error"}
+{"message":"500 - Cannot read property 'map' of undefined - /announcement/top/5f4bf7568021c94468dee967 - GET - ::1","level":"error"}
+{"message":"500 - Cannot read property 'map' of undefined - /announcement/top/5f4bf7568021c94468dee967 - GET - ::1","level":"error"}
+{"message":"500 - Cannot read property 'map' of undefined - /announcement/top/5f4bf7568021c94468dee967 - GET - ::1","level":"error"}
+{"message":"500 - Cannot read property 'map' of undefined - /announcement/top/5f4bf7568021c94468dee967 - GET - ::1","level":"error"}
+{"message":"500 - Cannot read property 'map' of undefined - /announcement/top/5f4bf7568021c94468dee967 - GET - ::1","level":"error"}
+{"message":"500 - Cannot read property 'map' of undefined - /announcement/top/5f4bf7568021c94468dee967 - GET - ::1","level":"error"}
+{"message":"500 - Cannot read property 'map' of undefined - /announcement/top/5f4bf7568021c94468dee967 - GET - ::1","level":"error"}
+{"message":"500 - Cannot read property 'map' of undefined - /announcement/top/5f4bf7568021c94468dee967 - GET - ::1","level":"error"}
+{"message":"500 - Cannot read property 'map' of undefined - /announcement/top/5f4bf7568021c94468dee967 - GET - ::1","level":"error"}
+{"message":"500 - Cannot read property 'keywords' of undefined - /announcement/top/5f4bf7568021c94468dee967 - GET - ::1","level":"error"}
+{"message":"500 - unknown top level operator: $not - /announcement/top/5f4bf7568021c94468dee967?limit=3 - GET - ::1","level":"error"}
+{"message":"500 - $not needs a regex or a document - /announcement/top/5f4bf7568021c94468dee967?limit=3 - GET - ::1","level":"error"}
+{"message":"500 - $and/$or/$nor must be a nonempty array - /announcement/top/5f4a85dafeaca7248446887f?limit=3 - GET - ::ffff:127.0.0.1","level":"error"}
+{"message":"500 - $and/$or/$nor must be a nonempty array - /announcement/top/5f4a85dafeaca7248446887f?limit=3 - GET - ::ffff:127.0.0.1","level":"error"}
+{"message":"500 - $and/$or/$nor must be a nonempty array - /announcement/top/5f4a85dafeaca7248446887f?limit=3 - GET - ::ffff:127.0.0.1","level":"error"}
+{"message":"500 - $and/$or/$nor must be a nonempty array - /announcement/top/5f4a85dafeaca7248446887f?limit=3 - GET - ::ffff:127.0.0.1","level":"error"}
+{"message":"500 - unknown top level operator: $ne - /announcement/top/5f4a85dafeaca7248446887f?limit=3 - GET - ::ffff:127.0.0.1","level":"error"}

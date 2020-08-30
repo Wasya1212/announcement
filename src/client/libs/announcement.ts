@@ -24,6 +24,11 @@ export interface SearchAnnouncementOptions {
   page?: number
 }
 
+export interface TopSimilar {
+  announcement: Announcement,
+  similarAnnouncements: Announcement[]
+}
+
 export default class Announcement implements AnnouncementProterties {
   public id: string;
   public title: string;
@@ -51,6 +56,18 @@ export default class Announcement implements AnnouncementProterties {
 
   public static makeViews(id: string): void {
     Axios.post('/announcement/watch', { id });
+  }
+
+  public static async getTopSimilar(id: string, searchOptions?: SearchAnnouncementOptions): Promise<TopSimilar> {
+    const { data } = await Axios({
+      method: 'GET',
+      url: `/announcement/top/${id}?${this.createSearchQuery(searchOptions)}`
+    });
+
+    return {
+      similarAnnouncements: data.similarAnnouncements.map((result: any) => new Announcement(result)),
+      announcement: new Announcement(data.currentAnnouncement)
+    };
   }
 
   public static async find(searchQuery: AnnouncementProterties = {}, searchOptions?: SearchAnnouncementOptions): Promise<Announcement[]> {

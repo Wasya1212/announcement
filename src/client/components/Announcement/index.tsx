@@ -21,7 +21,7 @@ export interface CompactAnnouncementComponentProps {
   announcement: Announcement
 }
 
-export class CompactAnnouncementComponent extends Component<any, any> {
+export class CompactAnnouncementComponent extends Component<CompactAnnouncementComponentProps, any> {
   constructor(props) {
     super(props);
   }

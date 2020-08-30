@@ -4,13 +4,15 @@ import { useParams, Link } from "react-router-dom";
 import {
   CreateAnnouncementFormComponent,
   UpdateAnnouncementFormComponent,
-  DeleteAnnouncementFormComponent
+  DeleteAnnouncementFormComponent,
+  CompactAnnouncementComponent
 } from "../../components/Announcement";
 
-import Announcement, { ExtendedAnnouncementProterties } from "../../libs/announcement";
+import Announcement, { TopSimilar } from "../../libs/announcement";
 
 interface AnnouncementPageState {
-  announcement: Announcement
+  announcement: Announcement,
+  similarAnnouncements: Announcement[]
 }
 
 interface AnnouncementPageProps {
@@ -27,17 +29,19 @@ export class AnnouncementPage extends Component<AnnouncementPageProps, Announcem
     super(props);
 
     this.state = {
-      announcement: new Announcement()
+      announcement: new Announcement(),
+      similarAnnouncements: []
     };
   }
 
   async componentDidMount() {
-    const announcements: Announcement[] = await Announcement.find({ id: this.props.id });
+    const topSimilarAnnouncements: TopSimilar = await Announcement.getTopSimilar(this.props.id, { limit: 3 })
 
     Announcement.makeViews(this.props.id);
 
     this.setState({
-      announcement: announcements[0]
+      announcement: topSimilarAnnouncements.announcement,
+      similarAnnouncements: topSimilarAnnouncements.similarAnnouncements
     });
   }
 
@@ -48,6 +52,11 @@ export class AnnouncementPage extends Component<AnnouncementPageProps, Announcem
         <h3>views: {this.state.announcement.viewsCount}</h3>
         <Link to={`/announcement/update/${this.state.announcement.id}`}>update</Link>
         <DeleteAnnouncementFormComponent announcementId={this.state.announcement.id} />
+        {
+          ...this.state.similarAnnouncements.map((announcement: Announcement) => (
+            <CompactAnnouncementComponent announcement={announcement} />
+          ))
+        }
       </main>
     );
   }

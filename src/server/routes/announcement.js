@@ -38,6 +38,7 @@ const ALLOWABLE_SEARCH_FIELDS_FOR_CLIENT = {
 };
 
 const MAX_SEARCH_ITEMS_LIMIT = 20;
+const MAX_TOP_SIMMILAR_SEARCH_ITEMS_LIMIT = 5;
 
 router.get('/announcement', async (ctx) => {
   let query = checkQueryFields(KEY_FIELDS_FOR_SEARCH, ctx.request.query);
@@ -69,12 +70,34 @@ router.get('/announcement/count', async (ctx) => {
 });
 
 router.get('/announcement/top/:id', async (ctx) => {
-  const currentAnnouncement = await Announcement.findById(ctx.request.params.id);
+  const currentAnnouncement = (await Announcement.aggregate([
+    { $match: { _id: mongoose.Types.ObjectId(ctx.request.params.id) } },
+    { $project: Object.assign({ keywords: true }, ALLOWABLE_SEARCH_FIELDS_FOR_CLIENT) },
+    { $limit: 1 }
+  ]))[0];
 
-  ctx.body = await Announcement
-    .find({$or: currentAnnouncement.keywords.map(keyword => ({ keywords: keyword }))})
-    .sort({ viewsCount: -1 })
-    .limit(3);
+  const itemsLimit = ctx.request.query.limit && ctx.request.query.limit <= MAX_TOP_SIMMILAR_SEARCH_ITEMS_LIMIT
+    ? +ctx.request.query.limit
+    : MAX_TOP_SIMMILAR_SEARCH_ITEMS_LIMIT;
+
+  const keywordsQuery = currentAnnouncement.keywords.map(keyword => ({ keywords: keyword }));
+
+  console.log(keywordsQuery)
+
+  const similarAnnouncements = await Announcement.aggregate([
+    {
+      $match: keywordsQuery.length > 0
+        ? { $or: keywordsQuery, _id: { $ne: mongoose.Types.ObjectId(ctx.request.params.id) } }
+        : { _id: { $ne: mongoose.Types.ObjectId(ctx.request.params.id) } }
+    },
+    { $project: ALLOWABLE_SEARCH_FIELDS_FOR_CLIENT },
+    { $sort: { viewsCount: -1 } },
+    { $limit: itemsLimit }
+  ]);
+
+  delete currentAnnouncement.keywords;
+
+  ctx.body = { currentAnnouncement, similarAnnouncements };
 });
 
 router.post('/announcement', async (ctx, next) => {
