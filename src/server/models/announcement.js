@@ -9,7 +9,7 @@ const announcementSchema = new Schema({
   keywords: [{ required: false, type: Types.String }],
   category: { required: true, type: Types.String, trim: true },
   totalPrice: { required: true, type: Types.Number, default: 0 }
-});
+}, { timestamps: true });
 
 const announcementModel = new Model('Announcement', announcementSchema);
 

@@ -2,9 +2,8 @@ import React, { Component } from "react";
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
-import { Page as AnnouncementPage, CreateAnnouncementPage } from "./pages/Announcement";
+import { Page as AnnouncementPage, CreateAnnouncementPage, UpdateAnnouncementPage } from "./pages/Announcement";
 import { Page as FeedPage } from "./pages/Feed";
-import { Page as ProfilePage } from "./pages/Profile";
 
 import Header, { PageLink } from "./components/Header";
 
@@ -18,14 +17,13 @@ export default class App extends Component<any, any> {
   render() {
     return (
       <Router>
-        <main>
-          <Header pagesLinks={PAGES}></Header>
-        </main>
-        <div>
+        <Header pagesLinks={PAGES}></Header>
+        <div className="container">
           <Route path="/" exact component={FeedPage} />
-          <Route path="/profile" exact component={ProfilePage} />
+          <Route path="/announcement/search/:query" exact component={FeedPage} />
           <Route path="/announcement/id/:id" exact component={AnnouncementPage} />
           <Route path="/announcement/create" exact component={CreateAnnouncementPage} />
+          <Route path="/announcement/update/:id" exact component={UpdateAnnouncementPage} />
         </div>
       </Router>
     );

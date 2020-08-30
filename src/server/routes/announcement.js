@@ -2,6 +2,8 @@ const Router = require('koa-router');
 const Busboy = require('busboy');
 const AsyncBusboy = require('async-busboy');
 
+const { mongoose } = require('../middleware/mongoose');
+
 const Cloudinary = require('../libs/cloudinary');
 
 const { Announcement } = require('../models');
@@ -17,6 +19,47 @@ const KEY_FIELDS_FROM_CLIENT_FOR_CREATION = [
   'totalPrice',
   'category'
 ];
+
+const KEY_FIELDS_FOR_SEARCH = [
+  'id',
+  'title'
+];
+
+const ALLOWABLE_SEARCH_FIELDS_FOR_CLIENT = {
+  id: '$_id',
+  date: '$createdAt',
+  title: true,
+  description: true,
+  category: true,
+  totalPrice: true,
+  viewsCount: true,
+  imageUrls: true,
+  _id: false
+};
+
+const MAX_SEARCH_ITEMS_LIMIT = 20;
+
+router.get('/announcement', async (ctx) => {
+  let query = checkQueryFields(KEY_FIELDS_FOR_SEARCH, ctx.request.query);
+  if (query.id) {
+    query._id = mongoose.Types.ObjectId(query.id);
+    delete query.id;
+  }
+
+  if (query._id && !mongoose.Types.ObjectId.isValid(query._id)) {
+    ctx.throw(400, "Bad request!");
+  }
+
+  const itemsLimit = ctx.request.query.limit && ctx.request.query.limit <= MAX_SEARCH_ITEMS_LIMIT
+    ? +ctx.request.query.limit
+    : MAX_SEARCH_ITEMS_LIMIT;
+
+  ctx.body = await Announcement.aggregate([
+    { $match: query },
+    { $project: ALLOWABLE_SEARCH_FIELDS_FOR_CLIENT },
+    { $limit: itemsLimit }
+  ]);
+});
 
 router.post('/announcement', async (ctx, next) => {
   if (!compareBodyFields(KEY_FIELDS_FROM_CLIENT_FOR_CREATION, ctx.request.body)) {
@@ -40,6 +83,36 @@ router.post('/announcement', async (ctx, next) => {
   await next();
 });
 
+router.put('/announcement/:id', async (ctx, next) => {
+  let uploadedImages = await uploadImagesToCloudinary(ctx.request.files);
+  let currentImages = [];
+
+  try {
+    currentImages = JSON.parse(ctx.request.body.oldPictures);
+  } catch (err) {}
+
+  const query = {
+    title: ctx.request.body.title.trim(),
+    description: ctx.request.body.description.trim(),
+    totalPrice: +ctx.request.body.totalPrice,
+    category: ctx.request.body.category.trim(),
+    imageUrls: [...currentImages, ...uploadedImages],
+    keywords: findKeyWords(ctx.request.body.title, ctx.request.body.description)
+  };
+
+  const updatedAnnouncement = await Announcement.findByIdAndUpdate(ctx.request.params.id, query);
+
+  ctx.body = updatedAnnouncement;
+  await next();
+});
+
+router.delete('/announcement/:id', async (ctx) => {
+  await Announcement.findByIdAndRemove(ctx.request.params.id);
+
+  ctx.status = 200;
+  ctx.body = {};
+});
+
 module.exports = router;
 
 function findKeyWords(text1, text2) {
@@ -49,6 +122,18 @@ function findKeyWords(text1, text2) {
   let [t1, t2] = splitedText1.length < splitedText2.length ? [splitedText1, splitedText2] : [splitedText2, splitedText1];
 
   return t1.filter(word => t2.includes(word));
+}
+
+function checkQueryFields(neededFields, currentQuery) {
+  let result = Object.create(null);
+
+  neededFields.forEach(k => {
+    if (currentQuery[k]) {
+      result[k] = currentQuery[k];
+    }
+  });
+
+  return result;
 }
 
 function compareBodyFields(neededFields, currentFields) {

@@ -1,31 +1,78 @@
 import Axios from "axios";
 
 export interface AnnouncementProterties {
-  title: string,
-  description: string,
-  category: string,
-  pictures: any[],
-  totalPrice: number
+  title?: string,
+  description?: string,
+  category?: string,
+  totalPrice?: number,
+  author?: string,
+  viewsCount?: number,
+  id?: string,
+  imageUrls?: string[],
+  date?: Date
 }
 
-export default class Announcement {
-  constructor() {
+export interface ExtendedAnnouncementProterties extends AnnouncementProterties {
+  pictures?: any[] | string[],
+  oldPictures?: any[] | string[]
+}
 
+export interface SearchAnnouncementOptions {
+  limit?: number
+}
+
+export default class Announcement implements AnnouncementProterties {
+  public id: string;
+  public title: string;
+  public description: string;
+  public category: string;
+  public totalPrice: number;
+  public viewsCount: number;
+  public imageUrls: string[];
+  public date?: Date;
+
+  constructor(props: AnnouncementProterties = {}) {
+    this.id = props.id || "";
+    this.title = props.title || "";
+    this.description = props.description || "";
+    this.category = props.category || "";
+    this.viewsCount = props.viewsCount || 0;
+    this.totalPrice = props.totalPrice || 0;
+    this.imageUrls = props.imageUrls || [];
+    this.date = props.date;
   }
 
-  public static async create(announcementData: AnnouncementProterties) {
-    let formData = new FormData();
+  private static createSearchQuery(query: any = {}): string {
+    return Object.keys(query).map(o => `${o}=${query[o].toString()}`).join('&');
+  }
 
-    console.log(announcementData)
+  public static async find(searchQuery: AnnouncementProterties = {}, searchOptions?: SearchAnnouncementOptions): Promise<Announcement[]> {
+    const { data: results } = await Axios({
+      method: 'GET',
+      url: `/announcement?${this.createSearchQuery(searchQuery)}&${this.createSearchQuery(searchOptions)}`
+    });
 
-    formData.append("title", announcementData.title);
-    formData.append("description", announcementData.description);
-    formData.append("category", announcementData.category);
-    formData.append("totalPrice", announcementData.totalPrice.toString());
+    return results.map((result: any) => new Announcement(result));
+  }
 
-    announcementData.pictures.forEach((picture: any, index: number) => {
-      formData.append(`image-${index}`, picture);
-      console.log(picture);
+  public static async delete(id: string): Promise<boolean> {
+    await Axios.delete(`/announcement/${id}`);
+    return true;
+  }
+
+  public static async create(announcementData: AnnouncementProterties | ExtendedAnnouncementProterties): Promise<Announcement> {
+    let formData: FormData = new FormData();
+
+    Object.keys(announcementData).forEach((key: string) => {
+      if (key == "pictures") {
+        (announcementData[key] || []).forEach((picture: any, index: number) => {
+          formData.append(`image-${index}`, picture);
+        });
+      } else if (typeof announcementData[key] == 'object') {
+        formData.append(key, JSON.stringify(announcementData[key]));
+      } else {
+        formData.append(key, announcementData[key].toString());
+      }
     });
 
     const { data } = await Axios.post(
@@ -34,15 +81,30 @@ export default class Announcement {
       { headers: { 'Content-Type': 'multipart/form-data' } }
     );
 
-    // Object.keys(announcementData).forEach((prop: string) => {
-    //   if (announcementData[prop].lastModified || typeof announcementData[prop] !== 'object') {
-    //     formData.append(prop, announcementData[prop]);
-    //     console.log(announcementData);
-    //   } else {
-    //     formData.append(prop, JSON.stringify(announcementData[prop]));
-    //   }
-    // });
+    return new Announcement(data);
+  }
 
-    console.log(announcementData)
+  public static async update(announcementData: AnnouncementProterties, announceId: string): Promise<boolean> {
+    let formData: FormData = new FormData();
+
+    Object.keys(announcementData).forEach((key: string) => {
+      if (key == "pictures") {
+        (announcementData[key] || []).forEach((picture: any, index: number) => {
+          formData.append(`image-${index}`, picture);
+        });
+      } else if (typeof announcementData[key] == 'object') {
+        formData.append(key, JSON.stringify(announcementData[key]));
+      } else {
+        formData.append(key, announcementData[key].toString());
+      }
+    });
+
+    const { data } = await Axios.put(
+      `/announcement/${announceId}`,
+      formData,
+      { headers: { 'Content-Type': 'multipart/form-data' } }
+    );
+
+    return !!data;
   }
 }

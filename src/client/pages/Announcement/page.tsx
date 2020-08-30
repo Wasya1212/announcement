@@ -1,126 +1,91 @@
 import React, { Component } from "react";
+import { useParams, Link } from "react-router-dom";
 
-import Announcement, { AnnouncementProterties } from "../../libs/announcement";
+import {
+  CreateAnnouncementFormComponent,
+  UpdateAnnouncementFormComponent,
+  DeleteAnnouncementFormComponent
+} from "../../components/Announcement";
 
-export class AnnouncementPageComponent extends Component<any, any> {
+import Announcement, { ExtendedAnnouncementProterties } from "../../libs/announcement";
+
+interface AnnouncementPageState {
+  announcement: Announcement
+}
+
+interface AnnouncementPageProps {
+  id: string
+}
+
+export function AnnouncementPageComponent() {
+  const ID = useParams<{id: string}>().id;
+  return <AnnouncementPage id={ID} />;
+}
+
+export class AnnouncementPage extends Component<AnnouncementPageProps, AnnouncementPageState> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      announcement: new Announcement()
+    };
+  }
+
+  async componentDidMount() {
+    const announcements: Announcement[] = await Announcement.find({ id: this.props.id });
+
+    this.setState({
+      announcement: announcements[0]
+    });
+  }
+
   render() {
     return (
-      <h1>Announcement page</h1>
+      <main>
+        <h1>{this.state.announcement.id}</h1>
+        <Link to={`/announcement/update/${this.state.announcement.id}`}>update</Link>
+        <DeleteAnnouncementFormComponent announcementId={this.state.announcement.id} />
+      </main>
     );
   }
 }
 
-export interface CreateAnnouncementPageComponentState {
-  announcementTitle: string,
-  announcementDescription: string,
-  announcementCategory: string,
-  announcementImages: any[],
-  announcementPrice: number,
-  loadedImages: (string | ArrayBuffer | null)[]
+export class CreateAnnouncementPageComponent extends Component<any, any> {
+  render() {
+    return (
+      <main>
+        <CreateAnnouncementFormComponent />
+      </main>
+    );
+  }
 }
 
-export class CreateAnnouncementPageComponent extends Component<any, CreateAnnouncementPageComponentState> {
-  public static MAX_IMAGES_COUNT: number = 4;
-  private MAX_IMAGES_COUNT: number = CreateAnnouncementPageComponent.MAX_IMAGES_COUNT;
+export interface UpdateAnnouncementPageComponentState {
+  announcement: Announcement
+}
 
-  state: CreateAnnouncementPageComponentState;
-
-  constructor(props: any) {
+export class UpdateAnnouncementPageComponent extends Component<any, UpdateAnnouncementPageComponentState> {
+  constructor(props) {
     super(props);
 
     this.state = {
-      announcementTitle: "",
-      announcementDescription: "",
-      announcementCategory: "electronic",
-      announcementPrice: 0,
-      announcementImages: [],
-      loadedImages: []
-    }
-  }
-
-  handleSumbit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-  }
-
-  createAnnouncement = async (e: React.FormEvent<HTMLButtonElement>) => {
-    const newAnnouncement: AnnouncementProterties = {
-      title: this.state.announcementTitle,
-      description: this.state.announcementDescription,
-      category: this.state.announcementCategory,
-      totalPrice: this.state.announcementPrice,
-      pictures: this.state.announcementImages
+      announcement: new Announcement()
     };
-
-    e.currentTarget.disabled = true;
-    await Announcement.create(newAnnouncement);
   }
 
-  handleChange = (e: React.FormEvent<HTMLInputElement> | React.FormEvent<HTMLSelectElement> | React.FormEvent<HTMLTextAreaElement>) => {
-    let obj = Object.create(null);
-    obj[e.currentTarget.name] = e.currentTarget.value || "";
+  async componentDidMount() {
+    let announcements = await Announcement.find({ id: this.props.match.params.id});
 
-    this.setState(obj);
-  }
-
-  handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.currentTarget.files) { return; }
-
-    let file = e.currentTarget.files[0];
-    let obj = Object.create(null);
-    obj[`picture-${this.state.announcementImages.length}`] = e.currentTarget.files[0];
-
-    if (FileReader && e.target.files && e.target.files.length) {
-      let fr: FileReader = new FileReader();
-
-      fr.onload = () => {
-        this.setState({
-          loadedImages: [...this.state.loadedImages, fr.result],
-          announcementImages: [...this.state.announcementImages, file]
-        });
-      }
-      fr.readAsDataURL(e.target.files[0]);
-    }
-  }
-
-  removeImageFromLoaded(imageIndex: number) {
-    let loadedImages = this.state.loadedImages;
-    let announcementImages = this.state.announcementImages;
-
-    try {
-      loadedImages.splice(imageIndex, 1);
-      announcementImages.splice(imageIndex, 1);
-    } catch (err) {
-      console.error("Image for deleating is not founded!");
-    }
-
-    this.setState({ loadedImages, announcementImages });
+    this.setState({
+      announcement: announcements[0]
+    });
   }
 
   render() {
     return (
-      <form onSubmit={this.handleSumbit} className="create-announcement-form">
-        <input name="announcementTitle" required placeholder="Title..." type="text" className="announcement-title-input" onChange={this.handleChange} />
-        <textarea name="announcementDescription" required placeholder="Description..." className="announcement-title-input" onChange={this.handleChange}></textarea>
-        <select name="announcementCategory" onChange={this.handleChange} value={this.state.announcementCategory}>
-          <option value="electronic">electronic</option>
-          <option value="music">music</option>
-          <option value="toys">toys</option>
-          <option value="clothing">clothing</option>
-        </select>
-        <input type="number" min="0" name="announcementPrice" onChange={this.handleChange} required placeholder="Price..." />
-        <input disabled={this.state.announcementImages.length >= this.MAX_IMAGES_COUNT} type="file" onChange={this.handleFileChange} />
-        <article className="loaded-images">
-          {
-            ...this.state.loadedImages.map((img: any, index: number) => (
-              <div key={`loaded-image-${index}`} className="loaded-image">
-                <img src={img} />
-                <input type="button" onClick={() => {this.removeImageFromLoaded(index)}} value="remove" />
-              </div>
-            ))
-          }
-        </article>
-        <button onClick={this.createAnnouncement}>Submit</button>
-      </form>
+      <main>
+        <UpdateAnnouncementFormComponent announcement={this.state.announcement} />
+      </main>
     );
   }
 }

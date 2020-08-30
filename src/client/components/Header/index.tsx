@@ -2,6 +2,8 @@ import React, { Component } from "react";
 
 import { Link } from "react-router-dom";
 
+import { FindAnnouncementFormComponent } from "../Announcement";
+
 export interface PageLink {
   text: string,
   url: string
@@ -31,6 +33,7 @@ export default class Header extends Component<HeaderProps, any> {
   render() {
     return (
       <header>
+        <FindAnnouncementFormComponent />
         <CreateAnnouncementButton />
         <nav>
           {
