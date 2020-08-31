@@ -81,7 +81,7 @@ export class DeleteAnnouncementFormComponent extends Component<DeleteAnnouncemen
 
     return (
       <form onSubmit={this.handleSumbit}>
-        <button>Delete</button>
+        <button className="btn">Delete</button>
       </form>
     );
   }

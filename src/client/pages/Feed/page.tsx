@@ -64,7 +64,7 @@ export default class FeedPageComponent extends Component<any, FeedPageState> {
 
   render() {
     return (
-      <div>
+      <main className="feed-page">
         {
           ...this.state.announcements.map((announcement: Announcement, index: number) => (
               <CompactAnnouncementComponent key={`compact-announcement-${index}`} announcement={announcement} />
@@ -76,7 +76,7 @@ export default class FeedPageComponent extends Component<any, FeedPageState> {
           maxButtonsCount={10}
           linkTemplate={(page: number) => `/announcement/search${Query.createQuery({ ...this.state.searchQuery.queries, page: page })}`}
         />
-      </div>
+      </main>
     );
   }
 }
