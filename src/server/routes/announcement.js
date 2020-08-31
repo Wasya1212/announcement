@@ -51,6 +51,10 @@ router.get('/announcement', async (ctx) => {
     ctx.throw(400, "Bad request!");
   }
 
+  if (query.title) {
+    query.title = new RegExp(["^", query.title, "$"].join(""), "i")
+  }
+
   const itemsLimit = ctx.request.query.limit && ctx.request.query.limit <= MAX_SEARCH_ITEMS_LIMIT
     ? +ctx.request.query.limit
     : MAX_SEARCH_ITEMS_LIMIT;
