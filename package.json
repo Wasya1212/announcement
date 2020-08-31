@@ -69,6 +69,7 @@
     "koa-session2": "^2.2.10",
     "koa-session2-mongostore": "0.0.5",
     "koa-static": "^5.0.0",
+    "moment": "^2.27.0",
     "mongoose": "^5.10.1",
     "mongoose-sequence": "^5.2.2",
     "mongoose-type-email": "^1.0.12",

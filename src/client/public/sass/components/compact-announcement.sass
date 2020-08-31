@@ -65,6 +65,7 @@
     display: block
     text-align: right
     margin: .5rem 0
+    cursor: default
   &__info
     position: absolute
     bottom: 1rem
@@ -72,12 +73,14 @@
     width: calc(100% - 310px)
     text-align: right
     &>*
+      cursor: default
       font-size: 14px
       font-weight: bold
       font-family: sans-serif
       color: #406367
       display: inline-block
       line-height: 1
+      user-select: none
     &__date
       &::before
         content: 'created:'
@@ -85,7 +88,7 @@
     &__views
       margin-left: 1rem
       &::before
-        content: 'views'
+        content: 'views:'
         margin-right: .5ch
     &__category
       display: inline-block

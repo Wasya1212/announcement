@@ -62,9 +62,7 @@ export default class FeedPageComponent extends Component<any, FeedPageState> {
       <div>
         {
           ...this.state.announcements.map((announcement: Announcement, index: number) => (
-            <Link to={`/announcement/id/${announcement.id}`} key={`compact-announcement-${index}`}>
-              <CompactAnnouncementComponent announcement={announcement} />
-            </Link>
+              <CompactAnnouncementComponent key={`compact-announcement-${index}`} announcement={announcement} />
           ))
         }
         <Pagination

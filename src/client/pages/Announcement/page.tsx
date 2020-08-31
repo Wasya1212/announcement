@@ -45,6 +45,19 @@ export class AnnouncementPage extends Component<AnnouncementPageProps, Announcem
     });
   }
 
+  async componentWillReceiveProps(newProps) {
+    if (this.props.id != newProps.id) {
+      const topSimilarAnnouncements: TopSimilar = await Announcement.getTopSimilar(newProps.id, { limit: 3 })
+
+      Announcement.makeViews(this.props.id);
+
+      this.setState({
+        announcement: topSimilarAnnouncements.announcement,
+        similarAnnouncements: topSimilarAnnouncements.similarAnnouncements
+      });
+    }
+  }
+
   render() {
     return (
       <main>

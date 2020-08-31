@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
+
+import Moment from "moment";
 
 import Announcement, { ExtendedAnnouncementProterties } from "../../libs/announcement";
 
@@ -30,13 +32,17 @@ export class CompactAnnouncementComponent extends Component<CompactAnnouncementC
     return (
       <article className="compact-announcement">
         <header className="compact-announcement__head">
-          <div className="compact-announcement__preview"><img src={this.props.announcement.imageUrls[0]} /></div>
-          <div className="compact-announcement__title"><h3>{this.props.announcement.title}</h3></div>
-          <div className="compact-announcement__price"><strong>{`${this.props.announcement.totalPrice} UAH` || "Free"}</strong></div>
+          <Link to={`/announcement/id/${this.props.announcement.id}`}>
+            <div className="compact-announcement__preview"><img src={this.props.announcement.imageUrls[0]} /></div>
+          </Link>
+          <Link to={`/announcement/id/${this.props.announcement.id}`}>
+            <div className="compact-announcement__title"><h3>{this.props.announcement.title}</h3></div>
+          </Link>
+          <div className="compact-announcement__price"><strong>{`${this.props.announcement.totalPrice ? this.props.announcement.totalPrice + " UAH" : "Free"}`}</strong></div>
         </header>
         <section className="compact-announcement__info">
           <span className="compact-announcement__info__category">{this.props.announcement.category}</span>
-          <span className="compact-announcement__info__date">{this.props.announcement.date}</span>
+          <span className="compact-announcement__info__date">{Moment(this.props.announcement.date).format("Do MMM YYYY")}</span>
           <span className="compact-announcement__info__views">{this.props.announcement.viewsCount}</span>
         </section>
       </article>
