@@ -12,7 +12,8 @@ export interface CreateAnnouncementPageComponentState {
   announcementImages: any[],
   announcementPrice: number,
   loadedImages: (string | ArrayBuffer | null)[],
-  submited: boolean
+  submited: boolean,
+  sended: boolean
 }
 
 export interface CreateAnnouncementPageComponentProps {
@@ -151,15 +152,17 @@ export class CreateAnnouncementFormComponent extends Component<CreateAnnouncemen
       announcementPrice: 0,
       announcementImages: [],
       loadedImages: [],
-      submited: false
+      submited: false,
+      sended: false
     }
   }
 
   handleSumbit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    this.submitData();
   }
 
-  submitData = (e: React.FormEvent<HTMLButtonElement>) => {
+  submitData = () => {
     const newAnnouncement: ExtendedAnnouncementProterties = {
       title: this.state.announcementTitle,
       description: this.state.announcementDescription,
@@ -168,12 +171,12 @@ export class CreateAnnouncementFormComponent extends Component<CreateAnnouncemen
       pictures: this.state.announcementImages
     };
 
-    e.currentTarget.disabled = true;
+    this.setState({ sended: true });
 
     Announcement
       .create(newAnnouncement)
       .then(() => {
-        this.setState({ submited: true });
+        this.setState({ sended: false, submited: true });
       });
   }
 
@@ -236,27 +239,29 @@ export class CreateAnnouncementFormComponent extends Component<CreateAnnouncemen
 
     return (
       <form onSubmit={this.handleSumbit} className="create-announcement-form">
-        <input value={this.state.announcementTitle} name="announcementTitle" required placeholder="Title..." type="text" className="announcement-title-input" onChange={this.handleChange} />
-        <textarea value={this.state.announcementDescription} name="announcementDescription" required placeholder="Description..." className="announcement-title-input" onChange={this.handleChange}></textarea>
-        <select name="announcementCategory" onChange={this.handleChange} value={this.state.announcementCategory}>
-          <option value="electronic">electronic</option>
-          <option value="music">music</option>
-          <option value="toys">toys</option>
-          <option value="clothing">clothing</option>
+        <input className="create-announcement-form__input title-input" value={this.state.announcementTitle} name="announcementTitle" required placeholder="Title..." type="text" onChange={this.handleChange} />
+        <textarea className="create-announcement-form__textarea description-input" value={this.state.announcementDescription} name="announcementDescription" required placeholder="Description..." onChange={this.handleChange}></textarea>
+        <select className="create-announcement-form__select category-select" name="announcementCategory" onChange={this.handleChange} value={this.state.announcementCategory}>
+          <option className="create-announcement-form__select__option" value="electronic">electronic</option>
+          <option className="create-announcement-form__select__option" value="music">music</option>
+          <option className="create-announcement-form__select__option" value="toys">toys</option>
+          <option className="create-announcement-form__select__option" value="clothing">clothing</option>
         </select>
-        <input onKeyPress={this.validateUnsigned} value={this.state.announcementPrice} type="number" min="0" name="announcementPrice" onChange={this.handleChange} required placeholder="Price..." />
-        <input accept="image/jpeg,image/png,image/gif" disabled={this.state.loadedImages.length >= this.MAX_IMAGES_COUNT} type="file" onChange={this.handleFileChange} />
-        <article className="loaded-images">
+        <input  className="create-announcement-form__input phone-input" onKeyPress={this.validateUnsigned} value={this.state.announcementPrice} type="number" min="0" name="announcementPrice" onChange={this.handleChange} required placeholder="Price..." />
+        <input  className="create-announcement-form___input load-image-input" accept="image/jpeg,image/png,image/gif" disabled={this.state.loadedImages.length >= this.MAX_IMAGES_COUNT} type="file" onChange={this.handleFileChange} />
+        <article className="loaded-images-container">
           {
             ...this.state.loadedImages.map((img: any, index: number) => (
-              <div key={`loaded-image-${index}`} className="loaded-image">
+              <div key={`loaded-image-${index}`} className="loaded-image" id={`loaded-image-${index}`}>
                 <img src={img} />
-                <input type="button" onClick={() => {this.removeImageFromLoaded(index)}} value="remove" />
+                <div className="remove-loaded-image-btn"><input type="button" onClick={() => {this.removeImageFromLoaded(index)}} value="x" /></div>
               </div>
             ))
           }
         </article>
-        <button onClick={this.submitData}>Submit</button>
+        <div className="button-container">
+          <button disabled={this.state.sended} className="create-announcement-form__submit-button submit-btn btn">Submit</button>
+        </div>
       </form>
     );
   }
@@ -278,7 +283,8 @@ export class UpdateAnnouncementFormComponent extends CreateAnnouncementFormCompo
       announcementPrice: this.props.announcement.totalPrice,
       announcementImages: new Array(this.props.announcement.imageUrls.length).fill(false),
       loadedImages: this.props.announcement.imageUrls,
-      submited: false
+      submited: false,
+      sended: false
     }
   }
 
@@ -290,11 +296,12 @@ export class UpdateAnnouncementFormComponent extends CreateAnnouncementFormCompo
       announcementPrice: nextProps.announcement.totalPrice,
       announcementImages: new Array(nextProps.announcement.imageUrls.length).fill(false),
       loadedImages: nextProps.announcement.imageUrls,
-      submited: false
+      submited: false,
+      sended: false
     });
   }
 
-  submitData = (e: React.FormEvent<HTMLButtonElement>) => {
+  submitData = () => {
     const newAnnouncementInfo: ExtendedAnnouncementProterties = {
       title: this.state.announcementTitle,
       description: this.state.announcementDescription,
@@ -304,12 +311,12 @@ export class UpdateAnnouncementFormComponent extends CreateAnnouncementFormCompo
       oldPictures: this.state.loadedImages.filter(img => (img || "").toString().length < 150)
     };
 
-    e.currentTarget.disabled = true;
+    this.setState({ sended: true });
 
     Announcement
       .update(newAnnouncementInfo, (this.props.announcement || new Announcement()).id)
       .then(() => {
-        this.setState({ submited: true });
+        this.setState({ sended: false, submited: true });
       });
   }
 }

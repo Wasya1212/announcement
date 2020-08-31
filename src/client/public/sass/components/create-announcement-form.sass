@@ -1,0 +1,118 @@
+.create-announcement-form
+  border-radius: 10px
+  margin: 1rem 2rem
+  background-color: #fff
+  padding: 2rem
+  display: -webkit-flex
+  display: -ms-flex
+  display: flex
+  justify-content: flex-start
+  flex-direction: column
+  &__textarea
+    height: 350px
+    min-height: 350px
+    max-height: 500px
+  .loaded-images-container
+    display: -webkit-flex
+    display: -ms-flex
+    display: flex
+    flex-direction: row
+    flex-wrap: wrap
+  .loaded-image
+    width: 160px
+    height: 120px
+    display: inline-block
+    position: relative
+    cursor: default
+    margin-right: 1rem
+    margin-bottom: 1rem
+    &:last-child
+      margin-right: 0
+    .remove-loaded-image-btn
+      position: absolute
+      top: 5px
+      right: 5px
+      background-color: rgba(0, 0, 0, .5)
+      border-radius: 100%
+      display: inline-block
+      margin: 0
+      padding: 0
+      width: 50px
+      height: 50px
+      vertical-align: middle
+      overflow: hidden
+      transform: scale(0.8)
+      z-index: 9999999
+      input
+        position: relative
+        cursor: pointer
+        margin-top: -8px
+        padding: 0
+        color: white
+        display: inline-block
+        width: 100%
+        height: 100%
+        background-color: transparent
+        font-family: cursive
+        text-shadow: 0 1px 1px black
+        font-size: 40px
+    img
+      border-radius: 5px
+      width: 100%
+      height: 100%
+      object-fit: cover
+      object-position: center
+    &::after
+      content: ''
+      position: absolute
+      left: 0
+      top: 0
+      width: 100%
+      height: 100%
+      user-select: none
+  .button-container
+    align-self: flex-end
+  &__submit-button
+  &>*
+    margin: 1rem 0
+  input, textarea, select
+    position: relative
+    background-color: #eee
+    padding: 14px 16px
+    color: #406367
+    max-width: calc(600px - 1rem)
+    border: none
+    border-radius: 5px
+    box-sizing: border-box
+    font-family: sans-serif
+    outline: none
+    &:focus
+      border-bottom: 2px solid #406367
+  input[type="file"]
+    color: transparent
+    background-color: transparent
+    width: 160px
+    height: 120px
+    font-weight: bold
+    font-size: 14px
+    cursor: pointer
+    &::after
+      content: "press to add new image"
+      background-color: #cbf7ee
+      color: #406367
+      line-height: 1.25
+      text-align: center
+      padding: 1.5rem 1rem 0 1rem
+      box-sizing: border-box
+      position: absolute
+      left: 0
+      top: 0
+      width: 100%
+      height: 100%
+      text-transform: lowercase
+      border-radius: 5px
+      z-index: 9999
+      background-image: url('assets/icons/add.png')
+      background-repeat: no-repeat
+      background-size: 30px 30px
+      background-position: center 70px
