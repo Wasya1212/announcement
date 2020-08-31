@@ -1,0 +1,69 @@
++keyframes(paddingAnimIn)
+  0%
+    padding: 5px 5px
+  100%
+    padding: 8px 17px
+
++keyframes(bgAnimIn)
+  0%
+    background-color: white
+    color: #002f34
+  70%
+    color: white
+  100%
+    background-color: #002f34
+
++keyframes(paddingAnimOut)
+  0%
+    padding: 8px 17px
+  100%
+    padding: 5px 5px
+
++keyframes(bgAnimOut)
+  0%
+    background-color: #002f34
+  70%
+    color: #002f34
+  100%
+    background-color: white
+
+$backgroundAnimNameIn: bgAnimIn
+$paddingAnimNameIn: paddingAnimIn
+
+$backgroundAnimNameOut: bgAnimOut
+$paddingAnimNameOut: paddingAnimOut
+
+$backgroundAnimDuration: .25s
+$paddinAnimDuration: .15s
+
+$backgroundAnimEasing: ease-in-out
+$paddingAnimEasing: ease-in-out
+
+.create-announcement-btn
+  background-color: #ffffff
+  display: inline-block
+  border-radius: 5px
+  box-sizing: border-box
+  overflow: hidden
+  padding: 13px 22px
+  animation: $paddingAnimNameOut $paddinAnimDuration $paddingAnimEasing
+  animation-direction: reverse
+  &:hover
+    animation: $paddingAnimNameIn $paddinAnimDuration $paddingAnimEasing
+    animation-direction: reverse
+    padding: 5px 5px
+    a
+      animation: $paddingAnimNameIn $paddinAnimDuration $paddingAnimEasing, $backgroundAnimNameIn $backgroundAnimDuration $backgroundAnimEasing
+      color: white
+      background-color: #002f34
+      padding: 8px 17px
+  a
+    animation-fill-mode: forwards
+    display: block
+    color: #002f34
+    font-size: 16px
+    font-weight: bold
+    font-family: sans-serif
+    text-transform: capitalize
+    background-color: transparent
+    animation: $paddingAnimNameOut $paddinAnimDuration $paddingAnimEasing, $backgroundAnimNameOut $backgroundAnimDuration $backgroundAnimEasing

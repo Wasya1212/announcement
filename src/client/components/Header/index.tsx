@@ -25,6 +25,8 @@ export const CreateAnnouncementButton = () => (
   </section>
 );
 
+export const Logo = () => (<Link to="/" className="header__logo logo">NoT OLX</Link>);
+
 export default class Header extends Component<HeaderProps, any> {
   constructor(props) {
     super(props);
@@ -33,13 +35,11 @@ export default class Header extends Component<HeaderProps, any> {
   render() {
     return (
       <header className="header">
-        <FindAnnouncementFormComponent />
-        <CreateAnnouncementButton />
-        <nav>
-          {
-            ...(this.props.pagesLinks || []).map(NavbarLink)
-          }
-        </nav>
+        <section className="wrapper">
+          <Logo />
+          <FindAnnouncementFormComponent />
+          <CreateAnnouncementButton />
+        </section>
       </header>
     );
   }

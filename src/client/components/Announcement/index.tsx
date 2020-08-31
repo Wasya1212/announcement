@@ -127,9 +127,9 @@ export class FindAnnouncementFormComponent extends Component<any, FindAnnounceme
     }
 
     return (
-      <form onSubmit={this.handleSumbit}>
-        <input required onChange={this.handleChange} placeholder="Search..." />
-        <button onClick={this.search}>find</button>
+      <form className="find-announcement find-announcement__form" onSubmit={this.handleSumbit}>
+        <input className="find-announcement__input" required onChange={this.handleChange} placeholder="Search..." />
+        <button className="find-announcement__button" onClick={this.search}>find</button>
       </form>
     );
   }
