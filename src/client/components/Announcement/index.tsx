@@ -218,6 +218,17 @@ export class CreateAnnouncementFormComponent extends Component<CreateAnnouncemen
     this.setState({ loadedImages, announcementImages });
   }
 
+  private validateUnsigned(e: React.KeyboardEvent<HTMLInputElement>) {
+    const key = e.keyCode || e.which;
+    const regex = /[0-9]/;
+
+    if( !regex.test(String.fromCharCode( key )) ) {
+      //@ts-ignore
+      e.returnValue = false;
+      if(e.preventDefault) e.preventDefault();
+    }
+  }
+
   render() {
     if (this.state.submited) {
       return <Redirect to="/" />;
@@ -233,7 +244,7 @@ export class CreateAnnouncementFormComponent extends Component<CreateAnnouncemen
           <option value="toys">toys</option>
           <option value="clothing">clothing</option>
         </select>
-        <input value={this.state.announcementPrice} type="number" min="0" name="announcementPrice" onChange={this.handleChange} required placeholder="Price..." />
+        <input onKeyPress={this.validateUnsigned} value={this.state.announcementPrice} type="number" min="0" name="announcementPrice" onChange={this.handleChange} required placeholder="Price..." />
         <input accept="image/jpeg,image/png,image/gif" disabled={this.state.loadedImages.length >= this.MAX_IMAGES_COUNT} type="file" onChange={this.handleFileChange} />
         <article className="loaded-images">
           {
