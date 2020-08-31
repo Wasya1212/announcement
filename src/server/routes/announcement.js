@@ -165,8 +165,8 @@ router.delete('/announcement/:id', async (ctx) => {
 module.exports = router;
 
 function findKeyWords(text1, text2) {
-  const splitedText1 = text1.trim().split(" "),
-        splitedText2 = text2.trim().split(" ");
+  const splitedText1 = text1.trim().toLowerCase().split(" "),
+        splitedText2 = text2.trim().toLowerCase().split(" ");
 
   let [t1, t2] = splitedText1.length < splitedText2.length ? [splitedText1, splitedText2] : [splitedText2, splitedText1];
 
