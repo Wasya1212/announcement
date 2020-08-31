@@ -82,8 +82,6 @@ router.get('/announcement/top/:id', async (ctx) => {
 
   const keywordsQuery = currentAnnouncement.keywords.map(keyword => ({ keywords: keyword }));
 
-  console.log(keywordsQuery)
-
   const similarAnnouncements = await Announcement.aggregate([
     {
       $match: keywordsQuery.length > 0

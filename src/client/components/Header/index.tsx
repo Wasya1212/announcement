@@ -32,7 +32,7 @@ export default class Header extends Component<HeaderProps, any> {
 
   render() {
     return (
-      <header>
+      <header className="header">
         <FindAnnouncementFormComponent />
         <CreateAnnouncementButton />
         <nav>

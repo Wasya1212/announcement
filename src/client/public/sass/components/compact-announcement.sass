@@ -1,0 +1,93 @@
+.compact-announcement
+  background-color: white
+  position: relative
+  margin: 1rem auto
+  padding: .5rem
+  box-sizing: border-box
+  max-width: 1200px
+  min-width: 400px
+  border-radius: 5px
+  &:hover
+    background-color: #f6f6f6
+    box-shadow: 0 0 10px rgba(0, 0, 0, .15)
+  &__head
+    display: -webkit-flex
+    display: -ms-flex
+    display: flex
+    justify-content: flex-start
+    flex-direction: row
+    flex-wrap: nowrap
+    align-items: flex-start
+  &__preview
+    position: relative
+    width: 300px
+    height: 200px
+    background-image: url('assets/img/default-background-1.jpg')
+    background-repeat: no-repeat
+    background-size: cover
+    &::after
+      content: ''
+      display: inline-block
+      position: absolute
+      left: 0
+      top: 0
+      width: 100%
+      height: 100%
+    img
+      width: 100%
+      height: 100%
+      max-width: 100%
+      max-height: 100%
+      object-fit: cover
+      object-position: center
+  &__title
+    display: inline-block
+    color: #002f34
+    text-transform: uppercase
+    font-weight: 400
+    line-height: 1.2
+    margin-top: 5px
+    font-size: 20px
+    text-align: left
+    text-decoration: none !important
+    padding: .5rem
+    margin: 0
+    &:hover
+      background-color: #002f34
+      color: white
+  &__price
+    font-size: 16px
+    color: #002f34
+    text-transform: uppercase
+    line-height: 1.25
+    margin-right: auto
+    flex-grow: 1
+    display: block
+    text-align: right
+    margin: .5rem 0
+  &__info
+    position: absolute
+    bottom: 1rem
+    right: .5rem
+    width: calc(100% - 310px)
+    text-align: right
+    &>*
+      font-size: 14px
+      font-weight: bold
+      font-family: sans-serif
+      color: #406367
+      display: inline-block
+      line-height: 1
+    &__date
+      &::before
+        content: 'created:'
+        margin-right: .5ch
+    &__views
+      margin-left: 1rem
+      &::before
+        content: 'views'
+        margin-right: .5ch
+    &__category
+      display: inline-block
+      float: left
+      margin-left: 1rem

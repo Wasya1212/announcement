@@ -43,7 +43,7 @@ function getPagesButtons(currentPageNumber: number, pagesCount: number, maxButto
 
   function pushOne(pageNumber: number) {
     buttons.push(
-      <div className={`pagination-link-${pageNumber}${currentPageNumber == pageNumber + 1 ? " current-page-link" : ""}`}>
+      <div className={`pagination__link pagination-link-${pageNumber}${currentPageNumber == pageNumber ? " current-page-link" : ""}`}>
         <Link to={linkTemplate(pageNumber)}>{pageNumber}</Link>
       </div>
     );

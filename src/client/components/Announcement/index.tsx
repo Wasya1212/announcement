@@ -28,14 +28,16 @@ export class CompactAnnouncementComponent extends Component<CompactAnnouncementC
 
   render() {
     return (
-      <article className="announcement">
-        <header>
-          <div><img src={this.props.announcement.imageUrls[0]} /></div>
-          <h3>{this.props.announcement.title}</h3>
+      <article className="compact-announcement">
+        <header className="compact-announcement__head">
+          <div className="compact-announcement__preview"><img src={this.props.announcement.imageUrls[0]} /></div>
+          <div className="compact-announcement__title"><h3>{this.props.announcement.title}</h3></div>
+          <div className="compact-announcement__price"><strong>{`${this.props.announcement.totalPrice} UAH` || "Free"}</strong></div>
         </header>
-        <section>
-          <span>{this.props.announcement.date}</span>
-          <span>{this.props.announcement.viewsCount}</span>
+        <section className="compact-announcement__info">
+          <span className="compact-announcement__info__category">{this.props.announcement.category}</span>
+          <span className="compact-announcement__info__date">{this.props.announcement.date}</span>
+          <span className="compact-announcement__info__views">{this.props.announcement.viewsCount}</span>
         </section>
       </article>
     );
