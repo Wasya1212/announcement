@@ -10,7 +10,8 @@ import Pagination from "../../components/Pagination";
 export interface FeedPageState {
   announcements: Announcement[],
   announcementsPagesCount: number,
-  searchQuery: Query
+  searchQuery: Query,
+  currentPageNumber?: number
 }
 
 export default class FeedPageComponent extends Component<any, FeedPageState> {
@@ -20,7 +21,8 @@ export default class FeedPageComponent extends Component<any, FeedPageState> {
     this.state = {
       announcements: [],
       announcementsPagesCount: 0,
-      searchQuery: new Query(this.props.location.search)
+      searchQuery: new Query(this.props.location.search),
+      currentPageNumber: 1
     }
   }
 
@@ -37,7 +39,8 @@ export default class FeedPageComponent extends Component<any, FeedPageState> {
       this.setState({
         announcements,
         announcementsPagesCount: Math.ceil(announcementsCount / 3),
-        searchQuery: query
+        searchQuery: query,
+        currentPageNumber: pageNumber
       });
     }
   }
@@ -53,7 +56,9 @@ export default class FeedPageComponent extends Component<any, FeedPageState> {
 
     this.setState({
       announcements,
-      announcementsPagesCount: Math.ceil(announcementsCount / 3)
+      announcementsPagesCount: Math.ceil(announcementsCount / 3),
+      searchQuery: query,
+      currentPageNumber: pageNumber
     });
   }
 
@@ -67,7 +72,7 @@ export default class FeedPageComponent extends Component<any, FeedPageState> {
         }
         <Pagination
           pagesCount={this.state.announcementsPagesCount}
-          currentPageNumber={1}
+          currentPageNumber={this.state.currentPageNumber || 1}
           maxButtonsCount={10}
           linkTemplate={(page: number) => `/announcement/search${Query.createQuery({ ...this.state.searchQuery.queries, page: page })}`}
         />
