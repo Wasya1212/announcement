@@ -14,6 +14,8 @@ export interface FeedPageState {
   currentPageNumber?: number
 }
 
+const RESULTS_LIMIT: number = 6;
+
 export default class FeedPageComponent extends Component<any, FeedPageState> {
   constructor(props) {
     super(props);
@@ -34,11 +36,11 @@ export default class FeedPageComponent extends Component<any, FeedPageState> {
 
     if (query != this.state.searchQuery) {
       const announcementsCount: number = await Announcement.getTotalCount(query.queries);
-      const announcements: Announcement[] = await Announcement.find(query.queries, { limit: 3, page: pageNumber });
+      const announcements: Announcement[] = await Announcement.find(query.queries, { limit: RESULTS_LIMIT, page: pageNumber });
 
       this.setState({
         announcements,
-        announcementsPagesCount: Math.ceil(announcementsCount / 3),
+        announcementsPagesCount: Math.ceil(announcementsCount / RESULTS_LIMIT),
         searchQuery: query,
         currentPageNumber: pageNumber
       });
@@ -52,11 +54,11 @@ export default class FeedPageComponent extends Component<any, FeedPageState> {
     query.remove("page");
 
     const announcementsCount: number = await Announcement.getTotalCount(query.queries);
-    const announcements: Announcement[] = await Announcement.find(query.queries, { limit: 3, page: pageNumber });
+    const announcements: Announcement[] = await Announcement.find(query.queries, { limit: RESULTS_LIMIT, page: pageNumber });
 
     this.setState({
       announcements,
-      announcementsPagesCount: Math.ceil(announcementsCount / 3),
+      announcementsPagesCount: Math.ceil(announcementsCount / RESULTS_LIMIT),
       searchQuery: query,
       currentPageNumber: pageNumber
     });

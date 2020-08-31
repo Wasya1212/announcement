@@ -13,6 +13,8 @@ import {
 
 import Announcement, { TopSimilar } from "../../libs/announcement";
 
+const RESULTS_LIMIT: number = 3;
+
 interface AnnouncementPageState {
   announcement: Announcement,
   similarAnnouncements: Announcement[]
@@ -38,7 +40,7 @@ export class AnnouncementPage extends Component<AnnouncementPageProps, Announcem
   }
 
   async componentDidMount() {
-    const topSimilarAnnouncements: TopSimilar = await Announcement.getTopSimilar(this.props.id, { limit: 3 })
+    const topSimilarAnnouncements: TopSimilar = await Announcement.getTopSimilar(this.props.id, { limit: RESULTS_LIMIT })
 
     Announcement.makeViews(this.props.id);
 
@@ -50,7 +52,7 @@ export class AnnouncementPage extends Component<AnnouncementPageProps, Announcem
 
   async componentWillReceiveProps(newProps) {
     if (this.props.id != newProps.id) {
-      const topSimilarAnnouncements: TopSimilar = await Announcement.getTopSimilar(newProps.id, { limit: 3 })
+      const topSimilarAnnouncements: TopSimilar = await Announcement.getTopSimilar(newProps.id, { limit: RESULTS_LIMIT })
 
       Announcement.makeViews(this.props.id);
 
