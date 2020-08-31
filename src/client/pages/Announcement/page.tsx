@@ -99,7 +99,7 @@ export class AnnouncementPage extends Component<AnnouncementPageProps, Announcem
           <DeleteAnnouncementFormComponent announcementId={this.state.announcement.id} />
         </section>
         <section className="announcement-page__top-announcements">
-          <h4>Top announcements</h4>
+          <h4>Top similar announcements</h4>
           {
             ...this.state.similarAnnouncements.map((announcement: Announcement) => (
               <CompactAnnouncementComponent announcement={announcement} />
@@ -144,7 +144,7 @@ export class UpdateAnnouncementPageComponent extends Component<any, UpdateAnnoun
 
   render() {
     return (
-      <main>
+      <main className="create-announcement-page">
         <UpdateAnnouncementFormComponent announcement={this.state.announcement} />
       </main>
     );
