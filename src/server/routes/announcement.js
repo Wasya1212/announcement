@@ -52,7 +52,7 @@ router.get('/announcement', async (ctx) => {
   }
 
   if (query.title) {
-    query.title = new RegExp(["^", query.title, "$"].join(""), "i")
+    query.title = {$regex : new RegExp([".*", query.title, ".*$"].join(""), "i")};
   }
 
   const itemsLimit = ctx.request.query.limit && ctx.request.query.limit <= MAX_SEARCH_ITEMS_LIMIT
@@ -70,6 +70,11 @@ router.get('/announcement', async (ctx) => {
 
 router.get('/announcement/count', async (ctx) => {
   let query = checkQueryFields(KEY_FIELDS_FOR_SEARCH, ctx.request.query);
+
+  if (query.title) {
+    query.title = {$regex : new RegExp([".*", query.title, ".*$"].join(""), "i")};
+  }
+
   ctx.body = await Announcement.find(query).countDocuments();
 });
 

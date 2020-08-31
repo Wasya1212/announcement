@@ -1,1 +1,4 @@
 {"message":"500 - text1.trim(...).toLoverCase is not a function - /announcement - POST - ::ffff:127.0.0.1","level":"error"}
+{"message":"500 - $elemMatch needs an Object - /announcement?title=macbook&limit=3 - GET - ::ffff:127.0.0.1","level":"error"}
+{"message":"500 - $elemMatch needs an Object - /announcement?title=Macbook&limit=3 - GET - ::ffff:127.0.0.1","level":"error"}
+{"message":"500 - $elemMatch needs an Object - /announcement?title=macbook&limit=3 - GET - ::ffff:127.0.0.1","level":"error"}
