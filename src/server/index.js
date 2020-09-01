@@ -2,6 +2,7 @@ const Http = require('http');
 const Koa = require('koa');
 const Cors = require('@koa/cors');
 const BodyParser = require('koa-body');
+const Serve = require('koa-static');
 
 const Mongoose = require('./middleware/mongoose');
 const ErrorHandler = require('./middleware/error-handler');
@@ -22,10 +23,11 @@ app.use(async (ctx, next) => {
 
 app.use(Cors());
 app.use(ErrorHandler({ errorLogger: Logger, logMethodName: 'error' }));
+app.use(Serve(__dirname + '/public'));
 app.use(BodyParser({
   formLimit: '10mb',
   formidable: {
-    uploadDir: __dirname + '/uploads', // будь-який дєбіл може надіслати тонну файликів і сервак ляже, навіть якщо він не авторизований. ВИПРАВИТИ!
+    uploadDir: __dirname + '/uploads',
     keepExtensions: true
   },
   multipart: true,
